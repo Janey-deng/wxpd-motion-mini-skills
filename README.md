@@ -3,7 +3,7 @@
 > 一套面向**微信小程序**的动效协议与 skill 库,通过 AI 提示词调用,生成具备物理质感的动画代码。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v0.5.0-orange.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v0.5.1-orange.svg)](CHANGELOG.md)
 [![Skills](https://img.shields.io/badge/skills-7-green.svg)](docs/motion-catalog.md)
 [![Stage](https://img.shields.io/badge/stage-公测中-yellow.svg)](#项目阶段)
 
@@ -30,8 +30,8 @@
 ```
 请遵循以下动效协议生成代码:
 
-协议: https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.0/.cursor/rules/motion.mdc
-Skill: https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.0/docs/skills/modal-scale-in-elegant.md
+协议: https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.1/.cursor/rules/motion.mdc
+Skill: https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.1/docs/skills/modal-scale-in-elegant.md
 
 需求: <在这里写你的具体场景, 比如 "在 pages/order/order 页给底部确认弹窗加这个动效">
 ```
@@ -43,7 +43,7 @@ Skill: https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5
 在你自己的项目根目录执行:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.0/install.sh | bash -s v0.5.0
+curl -sSL https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.1/install.sh | bash -s v0.5.1
 ```
 
 脚本会自动:
@@ -72,7 +72,7 @@ AI 会自动从 `docs/motion-skills/` 找到匹配的 skill 并生成代码。
 
 ---
 
-## Skill 索引 (v0.5.0 共 7 个)
+## Skill 索引 (v0.5.1 共 7 个)
 
 所有 skill 都是 **优雅 (Elegant) 入场范式**: 时长 520ms · 缓动曲线 `cubic-bezier(0.32, 1.18, 0.5, 1)` · 末端 ~7% 微量超越。
 
@@ -103,10 +103,10 @@ AI 会自动从 `docs/motion-skills/` 找到匹配的 skill 并生成代码。
 
 ## 版本管理
 
-- **当前版本**: `v0.5.0`
+- **当前版本**: `v0.5.1`
 - **版本策略**: [语义化版本](https://semver.org/lang/zh-CN/) (0.x 公测期允许小幅调整,v1.0.0 后严格遵循)。
 - **变更日志**: [CHANGELOG.md](CHANGELOG.md)
-- **锁版本调用**: 所有 `install.sh` 与 raw URL 都建议带具体 tag (如 `v0.5.0`),不要用 `main` 分支,避免你的项目里的 AI 输出在我升级 skill 时突然变化。
+- **锁版本调用**: 所有 `install.sh` 与 raw URL 都建议带具体 tag (如 `v0.5.1`),不要用 `main` 分支,避免你的项目里的 AI 输出在我升级 skill 时突然变化。
 - **升级**: 重新跑一次 `install.sh` 带新版本号即可,会覆盖旧入口指针 + 同步最新 skill 内容。
 - **回滚**: 同上,带旧版本号即可。
 
@@ -114,7 +114,7 @@ AI 会自动从 `docs/motion-skills/` 找到匹配的 skill 并生成代码。
 
 ## 项目阶段
 
-⚠️ **当前 v0.5.0 是公测版本**,正式版 v1.0.0 还差几步:
+⚠️ **当前 v0.5.1 是公测版本**,正式版 v1.0.0 还差几步:
 
 - [ ] 增加退场 (Exit) 动效分类 (当前只有 7 个入场)
 - [ ] 增加更多场景 (C6 / C8 / C9 / C11 / C12 等)

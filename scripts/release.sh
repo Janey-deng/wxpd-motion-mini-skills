@@ -10,7 +10,9 @@
 #   2. 校验 git 工作区干净, 当前在 main 分支
 #   3. 改 VERSION 文件
 #   4. 改 .cursor/rules/motion.mdc 头部 "当前版本: **vX.Y.Z**" 标注
-#   5. 提示你检查 CHANGELOG.md 是否已经写好新版本条目
+#   4.5 同步 README.md 中所有 vOLD → vNEW (raw URL / badge / install 命令 / 文字版本号)
+#   4.5 同步 install.sh 错误提示中的版本号示例
+#   5. 提示你检查 CHANGELOG.md 是否已经写好新版本条目 (失败则 git checkout 回滚)
 #   6. git add + commit + tag + push 到远端
 #   7. 提示你去 GitHub 网页创建 Release (本机未装 gh CLI)
 #
@@ -123,6 +125,27 @@ else
   log_warn "$MDC 中未找到 \"当前版本: **vX.Y.Z**\" 标注, 跳过自动同步"
 fi
 
+# ---------- 4.5 同步 README.md 与 install.sh 内的版本号引用 ----------
+# 设计: 仅在"当前可识别为版本号引用"的位置替换, 不做盲目全文替换。
+# README.md 不包含任何历史版本号叙述 (历史在 CHANGELOG.md),
+# install.sh 仅替换 "例: vX.Y.Z" 形式的示例 (历史 bug 叙述里的 v0.5.0 不动)。
+
+OLD_VER="$CURRENT_VERSION"
+
+if [ -f README.md ] && [ -n "$OLD_VER" ] && [ "$OLD_VER" != "未知" ]; then
+  # README.md 中所有 vOLD → vNEW (经验证 README 无历史版本号引用, 安全)
+  sed_inplace "s|v${OLD_VER}|v${VERSION}|g" README.md
+  log_ok "已更新 README.md 版本号引用 (v${OLD_VER} → v${VERSION})"
+else
+  log_warn "未找到 README.md 或当前版本号未知, 跳过 README 同步"
+fi
+
+if [ -f install.sh ] && [ -n "$OLD_VER" ] && [ "$OLD_VER" != "未知" ]; then
+  # 只替换 "例: vOLD" 这类示例引用 (避免误伤 L111/L112 历史 bug 叙述)
+  sed_inplace "s|例: v${OLD_VER}|例: v${VERSION}|g" install.sh
+  log_ok "已更新 install.sh 错误提示中的版本号示例 (v${OLD_VER} → v${VERSION})"
+fi
+
 # ---------- 5. 提示检查 CHANGELOG ----------
 echo ""
 log_warn "⚠ 请确认 CHANGELOG.md 顶部已经写好 [${VERSION}] 条目!"
@@ -131,12 +154,10 @@ echo ""
 if ! grep -q "## \[${VERSION}\]" CHANGELOG.md 2>/dev/null; then
   log_error "CHANGELOG.md 中未找到 [${VERSION}] 条目"
   log_error "请先在 CHANGELOG.md 顶部加一段, 然后重新运行本脚本"
-  # 回滚 VERSION + motion.mdc 改动
-  echo "$CURRENT_VERSION" > VERSION
-  if [ -f "$MDC" ]; then
-    sed_inplace "s/当前版本: \*\*v$VERSION\*\*/当前版本: **v$CURRENT_VERSION**/g" "$MDC"
-  fi
-  log_info "已回滚 VERSION 与 $MDC 的改动"
+  # 用 git checkout 一次性回滚所有可能被本脚本修改的文件 (干净彻底, 不会误伤)
+  # 前提: 脚本开始时 git 工作区已校验为干净 (见上文 git status --porcelain 检查)
+  git checkout -- VERSION "$MDC" README.md install.sh 2>/dev/null || true
+  log_info "已回滚 VERSION / $MDC / README.md / install.sh 的改动"
   exit 1
 fi
 log_ok "CHANGELOG.md 中找到 [${VERSION}] 条目"

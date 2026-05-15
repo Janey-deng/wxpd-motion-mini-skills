@@ -3,8 +3,10 @@
 # motion-mini-skills · 一键安装脚本
 #
 # 用法:
-#   curl -sSL https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.0/install.sh | bash -s v0.5.0
-#   或在已克隆的目录里直接: bash install.sh v0.5.0
+#   curl -sSL https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/vX.Y.Z/install.sh | bash -s vX.Y.Z
+#   或在已克隆的目录里直接: bash install.sh vX.Y.Z
+#
+#   (vX.Y.Z 替换为实际版本号, 例: v0.5.1; 不指定参数则自动取 GitHub 上最新 release tag)
 #
 # 行为:
 #   1. 下载指定 tag 的 tarball 到临时目录
@@ -49,19 +51,19 @@ if [ -z "$VERSION" ]; then
     | head -n 1 \
     | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
   if [ -z "$VERSION" ]; then
-    log_error "无法获取最新版本号, 请显式指定版本: bash install.sh v0.5.0"
+    log_error "无法获取最新版本号, 请显式指定版本: bash install.sh vX.Y.Z"
     exit 1
   fi
 fi
 
-# 接受 v0.5.0 / 0.5.0 两种写法, 内部统一加 v 前缀
+# 接受 vX.Y.Z / X.Y.Z 两种写法, 内部统一加 v 前缀
 case "$VERSION" in
   v*) ;;
   *)  VERSION="v$VERSION" ;;
 esac
 
 if ! [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-  log_error "版本号格式错误: $VERSION (应为 vX.Y.Z, 例: v0.5.0)"
+  log_error "版本号格式错误: $VERSION (应为 vX.Y.Z, 例: v0.5.1)"
   exit 1
 fi
 
