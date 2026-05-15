@@ -79,11 +79,16 @@ Page({
   copyCurve() {
     const { skill } = this.data;
     if (!skill) return;
-    const text = `animation: ${skill.id} ${skill.duration}ms ${skill.curve} both;`;
+    // 仅复制 timing 参数 (duration + curve), animation-name 用占位符 <keyframe-name>
+    // skill.id 是 skill 标识符 (e.g. modal-slide-up-in-elegant), 不等于 CSS keyframe 名;
+    // 实际 keyframe 名见 docs/skills/<skill.id>.md (约定为 ml-<action>-elegant)
+    const text =
+      `/* keyframe 定义见 docs/skills/${skill.id}.md, 把 <keyframe-name> 替换为你项目里的 keyframe 名 */\n` +
+      `animation: <keyframe-name> ${skill.duration}ms ${skill.curve} both;`;
     wx.setClipboardData({
       data: text,
       success: () => {
-        wx.showToast({ title: 'CSS 已复制', icon: 'success' });
+        wx.showToast({ title: 'CSS 片段已复制', icon: 'success' });
       },
     });
   },

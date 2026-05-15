@@ -13,7 +13,7 @@
   </view>
 
   <!-- 每场景 1 张卡, 两列瀑布流 (上图下文)
-       UI 层只展示 "组件名称_动效形式 + 时长", 不展示 sceneId (sceneId 仅用作后台分类编号) -->
+       信息区垂直顺序: sceneId 编号 (灰色小字 tag) → 组件名称_动效形式 → 时长 -->
   <view class="idx__grid">
     <view wx:for="{{skills}}" wx:key="id"
           class="idx__cell"
@@ -23,6 +23,7 @@
         <scene-preview scene-id="{{item.sceneId}}"></scene-preview>
       </view>
       <view class="idx__cell-info">
+        <view class="idx__cell-id ml-mono">{{item.sceneId}}</view>
         <view class="idx__cell-name">{{item.sceneName}}_{{item.shortName}}</view>
         <view class="idx__cell-dur ml-mono">{{item.duration}}ms</view>
       </view>

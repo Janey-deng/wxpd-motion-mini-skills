@@ -21,34 +21,35 @@
     <text class="dt__back-icon">‹</text>
   </view>
 
-  <!-- 通栏预览舞台 (灰底从屏顶贯通到状态栏 + 胶囊按钮区域) -->
+  <!-- 通栏预览舞台 (灰底从屏顶贯通到状态栏 + 胶囊按钮区域)
+       现在内含 motion-card + 控件区, 让控件紧贴手机壳下方, 视觉上是手机的"附属操作区" -->
   <view class="dt__stage" style="padding-top: {{safeTop}}px;">
     <motion-card
       id="mc"
       skill-id="{{skillId}}"
       auto-play="{{true}}"
     ></motion-card>
+
+    <!-- 控件区 (倍速 + 重播) 移到手机壳正下方, 上 margin-top: 48rpx 跟手机壳呼吸
+         左侧 dt__speed: 0.2x / 1x 两档; 右侧 dt__btn-replay 跟 dt__speed-item 等宽 (120rpx) -->
+    <view class="dt__controls">
+      <view class="dt__speed">
+        <view class="dt__speed-item {{currentSpeed === 0.2 ? 'dt__speed-item--active' : ''}}"
+              data-speed="0.2" bindtap="onSpeedTap">0.2x</view>
+        <view class="dt__speed-item {{currentSpeed === 1 ? 'dt__speed-item--active' : ''}}"
+              data-speed="1" bindtap="onSpeedTap">1x</view>
+      </view>
+      <view class="dt__btn-replay" bindtap="onReplay">↻ 重播</view>
+    </view>
   </view>
 
   <!-- 内容区 wrapper: 顶部圆角 32rpx + 上推 -32rpx 让圆角覆盖在 .dt__stage 深灰底上, 形成"内容区从舞台下方上滑"视觉
-       padding-top: 32rpx 抵消 margin-top: -32rpx, 内部 controls/head/section 的 margin-top 完全保持原间距 -->
+       不设 padding-top: 让 .dt__head margin-top: 32rpx 就是 head 距 body 圆角顶的真实间距, 与下方卡片间距对齐 -->
   <view class="dt__body">
 
-  <!-- 控件区 (倍速 + 重播, 无背景, 直接排在预览图下方)
-       左侧 dt__speed: 0.2x / 1x 两档 (去掉 0.5x 中间档, 让用户体感差异更明显);
-       右侧 dt__btn-replay: 跟 dt__speed-item 等宽 (120rpx) 视觉对称 -->
-  <view class="dt__controls">
-    <view class="dt__speed">
-      <view class="dt__speed-item {{currentSpeed === 0.2 ? 'dt__speed-item--active' : ''}}"
-            data-speed="0.2" bindtap="onSpeedTap">0.2x</view>
-      <view class="dt__speed-item {{currentSpeed === 1 ? 'dt__speed-item--active' : ''}}"
-            data-speed="1" bindtap="onSpeedTap">1x</view>
-    </view>
-    <view class="dt__btn-replay" bindtap="onReplay">↻ 重播</view>
-  </view>
-
   <view class="dt__head">
-    <view class="dt__name">{{skill.name}}</view>
+    <!-- sceneId 内联拼接到标题前 (用 · 分隔), 例: "C1 · 居中弹窗 · 上滑浮入" -->
+    <view class="dt__name">{{skill.sceneId}} · {{skill.name}}</view>
     <view class="dt__physics">{{skill.physics}}</view>
   </view>
 
@@ -101,7 +102,7 @@
       </view>
       <view class="dt__check-item">
         <text class="dt__check-icon">✓</text>
-        <text>时长合规: {{skill.duration}}ms ≤ 600ms</text>
+        <text>时长合规: {{skill.duration}}ms ≤ 1000ms</text>
       </view>
     </view>
   </view>

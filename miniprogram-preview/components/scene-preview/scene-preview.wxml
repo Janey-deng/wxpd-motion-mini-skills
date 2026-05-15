@@ -4,22 +4,16 @@
     <view class="prv__viewport">
 
       <block wx:if="{{sceneId === 'C1'}}">
+        <!-- 缩略图同步详情页: 纯白卡片, 无骨架装饰线 -->
         <view class="prv__bg">页面</view>
         <view class="prv__mask"></view>
-        <view class="prv__modal">
-          <view class="prv__line prv__line--title"></view>
-          <view class="prv__line prv__line--short"></view>
-        </view>
+        <view class="prv__modal"></view>
       </block>
 
       <block wx:elif="{{sceneId === 'C2'}}">
-        <view class="prv__bg">页面</view>
+        <!-- 缩略图同步详情页: 纯白卡片, 无背景文字 / 无骨架线 -->
         <view class="prv__mask"></view>
-        <view class="prv__sheet">
-          <view class="prv__line"></view>
-          <view class="prv__line"></view>
-          <view class="prv__line prv__line--short"></view>
-        </view>
+        <view class="prv__sheet"></view>
       </block>
 
       <block wx:elif="{{sceneId === 'C3'}}">
@@ -28,10 +22,18 @@
       </block>
 
       <block wx:elif="{{sceneId === 'C4'}}">
+        <!-- 缩略图: 同步首页 demo 的两列瀑布流, 高度错落 (高/矮/高 vs 矮/高/矮) -->
         <view class="prv__cardlist">
-          <view class="prv__card"></view>
-          <view class="prv__card"></view>
-          <view class="prv__card"></view>
+          <view class="prv__cardlist-col">
+            <view class="prv__card prv__card--tall"></view>
+            <view class="prv__card prv__card--short"></view>
+            <view class="prv__card prv__card--tall"></view>
+          </view>
+          <view class="prv__cardlist-col">
+            <view class="prv__card prv__card--short"></view>
+            <view class="prv__card prv__card--tall"></view>
+            <view class="prv__card prv__card--short"></view>
+          </view>
         </view>
       </block>
 
@@ -39,15 +41,6 @@
         <view class="prv__bg">页面</view>
         <view class="prv__anchor"></view>
         <view class="prv__popover">提示</view>
-      </block>
-
-      <block wx:elif="{{sceneId === 'C7'}}">
-        <view class="prv__content">
-          <view class="prv__line prv__line--title"></view>
-          <view class="prv__line"></view>
-          <view class="prv__line prv__line--short"></view>
-          <view class="prv__block"></view>
-        </view>
       </block>
 
       <block wx:elif="{{sceneId === 'C10'}}">

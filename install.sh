@@ -10,7 +10,7 @@
 #
 # 行为:
 #   1. 下载指定 tag 的 tarball 到临时目录
-#   2. 把 motion.mdc + motion-catalog.md + 7 个 skill md 复制到当前项目的 docs/motion-skills/
+#   2. 把 motion.mdc + motion-catalog.md + 6 个 skill md 复制到当前项目的 docs/motion-skills/
 #   3. 智能检测当前项目里的 IDE 标志, 在对应位置写"入口指针"文件:
 #      - .cursor/         → .cursor/rules/motion.mdc
 #      - CLAUDE.md / .claude/ → 在 CLAUDE.md 追加引用块 (幂等)
@@ -133,7 +133,7 @@ make_entry_body() {
    - 目录: \`docs/motion-skills/motion-catalog.md\` (查可用 skill 列表)
    - Skill 实现: \`docs/motion-skills/skills/<skill-id>.md\` (具体代码)
 
-2. 严格按协议中的 \`[MUST]\` / \`[MUST NOT]\` 约束生成代码 (例: 时长 ≤ 600ms, 仅用 transform/opacity, 必须输出自查报告)。
+2. 严格按协议中的 \`[MUST]\` / \`[MUST NOT]\` 约束生成代码 (例: 时长 ≤ 1000ms, 仅用 transform/opacity, 必须输出自查报告)。
 
 3. 不要凭记忆编造动效代码, 必须使用 \`docs/motion-skills/skills/\` 中已定义的 skill。
 EOF

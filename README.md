@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-v0.5.1-orange.svg)](CHANGELOG.md)
-[![Skills](https://img.shields.io/badge/skills-7-green.svg)](docs/motion-catalog.md)
+[![Skills](https://img.shields.io/badge/skills-6-green.svg)](docs/motion-catalog.md)
 [![Stage](https://img.shields.io/badge/stage-公测中-yellow.svg)](#项目阶段)
 
 ---
@@ -14,8 +14,8 @@
 一份给 AI (Cursor / Claude Code / CodeBuddy / 通用 LLM) 的"动效说明书":
 
 - **动效协议** (`.cursor/rules/motion.mdc`): 限定 AI 生成动效时必须遵守的规则 (时长红线、性能要求、合规检查)。
-- **7 个 skill** (`docs/skills/*.md`): 每个 skill 一个动效场景 (居中弹窗 / 底部抽屉 / Toast / ...),包含完整 wxml + wxss 实现代码、物理参数、AI 唤醒词。
-- **预览工程** (`miniprogram-preview/`): 微信开发者工具打开即可预览 7 个动效在真机上的视觉效果。
+- **6 个 skill** (`docs/skills/*.md`): 每个 skill 一个动效场景 (居中弹窗 / 底部抽屉 / Toast / ...),包含完整 wxml + wxss 实现代码、物理参数、AI 唤醒词。
+- **预览工程** (`miniprogram-preview/`): 微信开发者工具打开即可预览 6 个动效在真机上的视觉效果。
 
 调用时不需要 npm install 或任何运行时依赖,你只需让 AI **读到这些 md 文件**,它就会按规则生成动效代码。
 
@@ -31,12 +31,12 @@
 请遵循以下动效协议生成代码:
 
 协议: https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.1/.cursor/rules/motion.mdc
-Skill: https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.1/docs/skills/modal-scale-in-elegant.md
+Skill: https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v0.5.1/docs/skills/modal-slide-up-in-elegant.md
 
 需求: <在这里写你的具体场景, 比如 "在 pages/order/order 页给底部确认弹窗加这个动效">
 ```
 
-→ 把 `modal-scale-in-elegant.md` 替换成你想用的 skill 文件名 (见下方 [Skill 索引](#skill-索引))。
+→ 把 `modal-slide-up-in-elegant.md` 替换成你想用的 skill 文件名 (见下方 [Skill 索引](#skill-索引))。
 
 ### 用法 ② · 一键安装到项目 (Cursor / Claude Code / CodeBuddy)
 
@@ -48,7 +48,7 @@ curl -sSL https://raw.githubusercontent.com/Janey-deng/wxpd-motion-mini-skills/v
 
 脚本会自动:
 
-1. 把动效协议 + 7 个 skill md 复制到你项目的 `docs/motion-skills/` 目录。
+1. 把动效协议 + 6 个 skill md 复制到你项目的 `docs/motion-skills/` 目录。
 2. 智能检测你的 IDE,在对应位置写一个**入口指针**:
    - 检测到 `.cursor/` → 写 `.cursor/rules/motion.mdc`
    - 检测到 `CLAUDE.md` 或 `.claude/` → 在 `CLAUDE.md` 追加引用块
@@ -72,18 +72,19 @@ AI 会自动从 `docs/motion-skills/` 找到匹配的 skill 并生成代码。
 
 ---
 
-## Skill 索引 (v0.5.1 共 7 个)
+## Skill 索引 (当前 main 共 6 个)
 
-所有 skill 都是 **优雅 (Elegant) 入场范式**: 时长 520ms · 缓动曲线 `cubic-bezier(0.32, 1.18, 0.5, 1)` · 末端 ~7% 微量超越。
+> ⚠️ **版本对齐说明**: 当前 main 分支已删除 C7 骨架屏 skill, 共 6 个; 已发布的 [v0.5.1](https://github.com/Janey-deng/wxpd-motion-mini-skills/releases/tag/v0.5.1) tag 仍包含 C7 共 7 个。下次发版时会同步删除, 届时 install.sh 拿到的也是 6 个。当前若用 v0.5.1 安装, 仍会得到 7 个 skill (含 C7)。
+
+所有 skill 都是 **优雅 (Elegant) 入场范式**: 默认时长 520ms · 缓动曲线 `cubic-bezier(0.32, 1.18, 0.5, 1)` · 末端 ~7% 微量超越 (C1 modal / C2 actionsheet / C4 card 各有 per-skill override, 见 [docs/motion-catalog.md](docs/motion-catalog.md) §3 速查表 footnote)。
 
 | 场景编号 | Skill ID | 场景 · 动作 | 文档 |
 |---|---|---|---|
-| C1  | `modal-scale-in-elegant`         | 居中弹窗 · 缩放浮入   | [md](docs/skills/modal-scale-in-elegant.md) |
+| C1  | `modal-slide-up-in-elegant`      | 居中弹窗 · 上滑浮入   | [md](docs/skills/modal-slide-up-in-elegant.md) |
 | C2  | `actionsheet-slide-up-elegant`   | 底部抽屉 · 上滑展开   | [md](docs/skills/actionsheet-slide-up-elegant.md) |
 | C3  | `toast-drop-in-elegant`          | 顶部 Toast · 下落出现 | [md](docs/skills/toast-drop-in-elegant.md) |
 | C4  | `card-stagger-in-elegant`        | 列表项卡片 · 错位浮入 | [md](docs/skills/card-stagger-in-elegant.md) |
 | C5  | `popover-anchor-in-elegant`      | 浮层 · 锚点放大       | [md](docs/skills/popover-anchor-in-elegant.md) |
-| C7  | `skeleton-crossfade-in-elegant`  | 骨架屏 · 渐显交叉     | [md](docs/skills/skeleton-crossfade-in-elegant.md) |
 | C10 | `refresh-pull-in-elegant`        | 下拉刷新 · 弹性下拉   | [md](docs/skills/refresh-pull-in-elegant.md) |
 
 > 完整目录与场景说明见 [docs/motion-catalog.md](docs/motion-catalog.md)。
@@ -92,12 +93,12 @@ AI 会自动从 `docs/motion-skills/` 找到匹配的 skill 并生成代码。
 
 ## 在真机上预览动效
 
-如果你想直观看到 7 个动效在真机的效果(而不是仅看 md):
+如果你想直观看到 6 个动效在真机的效果(而不是仅看 md):
 
 1. 安装 [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)。
 2. 打开本仓库的 `miniprogram-preview/` 目录作为小程序项目。
 3. 在 AppID 处选 "测试号" 即可,无需配置真实 AppID。
-4. 编译运行,首页瀑布流卡片即 7 个动效,点击任意卡片进入详情页可看完整动画 + 倍速回放。
+4. 编译运行,首页瀑布流卡片即 6 个动效,点击任意卡片进入详情页可看完整动画 + 倍速回放。
 
 ---
 
@@ -116,8 +117,8 @@ AI 会自动从 `docs/motion-skills/` 找到匹配的 skill 并生成代码。
 
 ⚠️ **当前 v0.5.1 是公测版本**,正式版 v1.0.0 还差几步:
 
-- [ ] 增加退场 (Exit) 动效分类 (当前只有 7 个入场)
-- [ ] 增加更多场景 (C6 / C8 / C9 / C11 / C12 等)
+- [ ] 增加退场 (Exit) 动效分类 (当前只有 6 个入场)
+- [ ] 增加更多场景 (C6 / C7 / C8 / C9 / C11 / C12 等)
 - [ ] 物理参数 spring → cubic-bezier 提供在线拟合工具
 - [ ] 在多种真机环境下验证 60fps 稳定性
 

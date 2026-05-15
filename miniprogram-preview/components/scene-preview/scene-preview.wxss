@@ -1,5 +1,5 @@
 /* ==========================================================================
-   scene-preview - 7 个动效场景的 mini 静态终态示意图
+   scene-preview - 6 个动效场景的 mini 静态终态示意图
    - 不带任何动画;只展示该场景"动效完成后"的视觉形态
    - 1:1 正方形容器, 三层结构 (与详情页 motion-card 同色, 但比例更夸张):
        prv__phone   (深灰舞台 #cfcfd2, 等同 detail.dt__stage, overflow hidden 裁切手机壳底部)
@@ -46,7 +46,7 @@
   left: calc(14% + 8rpx);
   right: calc(14% + 8rpx);
   bottom: 0;
-  background: #f4f5f7;
+  background: #ededed;
   border-radius: 24rpx 24rpx 0 0;
   overflow: hidden;
 }
@@ -64,36 +64,23 @@
   position: absolute; inset: 0;
   background: rgba(0, 0, 0, .35);
 }
-.prv__line {
-  height: 6rpx;
-  background: #e8eaed;
-  border-radius: 3rpx;
-  width: 100%;
-}
-.prv__line--short { width: 55%; }
-.prv__line--title {
-  height: 10rpx; width: 50%;
-  background: #c8c8cc;
-}
 
-/* C1 Modal */
+/* C1 Modal (纯白卡片, 无子元素, 与详情页 motion-card 同步)
+   aspect-ratio 16:7 跟详情页 .mc__modal (320×140rpx) 比例一致, 自适应 viewport 宽度 */
 .prv__modal {
   position: absolute; left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   width: 70%;
+  aspect-ratio: 16 / 7;
   background: #fff; border-radius: 8rpx;
-  padding: 14rpx 12rpx;
-  display: flex; flex-direction: column; gap: 8rpx;
 }
 
-/* C2 Sheet */
+/* C2 Sheet (纯白卡片, 无子元素, 与详情页 motion-card 同步) */
 .prv__sheet {
   position: absolute; left: 0; right: 0; bottom: 0;
   height: 50%;
   background: #fff;
   border-radius: 12rpx 12rpx 0 0;
-  padding: 14rpx 14rpx;
-  display: flex; flex-direction: column; gap: 10rpx;
 }
 
 /* C3 Toast */
@@ -107,17 +94,32 @@
   white-space: nowrap;
 }
 
-/* C4 Card list */
+/* C4 Card list (两列瀑布流, 高度错落; 与详情页 motion-card 视觉比例对齐)
+   - 纯白卡, 无 border / 无装饰; 与 viewport 浅灰底 #ededed 形成微反差
+   - 顶距 80rpx: 按详情页 240/856 ≈ 28% 比例反推 (缩略图 viewport 高 ~284rpx × 28% ≈ 80rpx)
+   - 边距 14rpx + 卡/列间距 10rpx: 按详情页 24rpx 边距 / 16rpx gap (≈ 列宽 13.6% / 9.1%)
+     反推到缩略图列宽 ~103rpx, 跟详情页"宽松感"对齐, 不再拥挤 */
 .prv__cardlist {
-  padding: 12rpx;
-  display: flex; flex-direction: column; gap: 8rpx;
+  position: absolute; inset: 0;
+  padding: 80rpx 14rpx 0;
+  box-sizing: border-box;
+  display: flex; gap: 10rpx;
+}
+.prv__cardlist-col {
+  flex: 1;
+  display: flex; flex-direction: column; gap: 10rpx;
 }
 .prv__card {
-  height: 50rpx;
   background: #fff;
-  border-radius: 6rpx;
-  border: 1rpx solid #ececef;
+  border-radius: 4rpx;
 }
+/* 卡片高度在原"按详情页比例反推"基础上再 +30%:
+   - 原值: tall 158 / short 105 (= 详情页 270:176 / 180:176 比例反推)
+   - 现值: tall 158×1.3 ≈ 205, short 105×1.3 ≈ 137
+   - 视觉效果: 卡片更扎实, 第一行卡占满 viewport 可见区, 第二行/第三行被 overflow:hidden 几乎完全裁切,
+     形成"只见首行卡 + 底部强烈瀑布流暗示"的极简预览效果 */
+.prv__card--tall  { height: 205rpx; }
+.prv__card--short { height: 137rpx; }
 
 /* C5 Popover */
 .prv__anchor {
@@ -137,18 +139,6 @@
   color: #333;
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, .1);
   white-space: nowrap;
-}
-
-/* C7 Skeleton (终态:内容已显示) */
-.prv__content {
-  padding: 14rpx 12rpx;
-  display: flex; flex-direction: column; gap: 8rpx;
-}
-.prv__block {
-  height: 70rpx;
-  background: #e8eaed;
-  border-radius: 6rpx;
-  margin-top: 6rpx;
 }
 
 /* C10 Refresh */

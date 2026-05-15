@@ -13,7 +13,7 @@ Skill名称: "PopoverAnchorInElegant"
 缓动曲线: "cubic-bezier(0.32, 1.18, 0.5, 1)"
 动画属性: "transform, opacity"
 物理逻辑: "浮层缓入缓出, 末端 ~7% 微量超越, 主动作完成后含蓄收尾。体感'呼吸感'。"
-AI唤醒词: "中文: 锚点放大 / 浮层锚点放大 - 英文: anchor in elegant / soft spring in"
+AI唤醒词: "中文: 锚点放大 / Popover 出现 / 浮层弹出 / 锚点缩放 / 引导提示出现 - 英文: anchor in elegant / popover in / popover scale in / anchor scale up / tooltip in"
 ```
 
 ---
@@ -79,7 +79,7 @@ AI唤醒词: "中文: 锚点放大 / 浮层锚点放大 - 英文: anchor in eleg
 FPS 预估:    60+
 重排风险:    无
 合成层:      已触发 GPU 加速 (translate3d + will-change)
-时长合规:    ✅ 520ms ≤ 600ms
+时长合规:    ✅ 520ms ≤ 1000ms
 ```
 
 ---
@@ -96,7 +96,7 @@ FPS 预估:    60+
 
 ### 通用 prompt 片段
 
-> "中文: 锚点放大 / 浮层锚点放大 - 英文: anchor in elegant / soft spring in"
+> "中文: 锚点放大 / Popover 出现 / 浮层弹出 / 锚点缩放 / 引导提示出现 - 英文: anchor in elegant / popover in / popover scale in / anchor scale up / tooltip in"
 
 ---
 

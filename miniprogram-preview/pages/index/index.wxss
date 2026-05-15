@@ -62,6 +62,12 @@
   gap: 6rpx;
   padding: 16rpx;
 }
+/* sceneId tag: 灰色 mono 小字, 跟 .idx__cell-dur 同色同号同字族, 形成"标题上下灰色 metadata"视觉对称 */
+.idx__cell-id {
+  font-size: 20rpx;
+  color: #b0b0b8;
+  letter-spacing: 0.5rpx;
+}
 .idx__cell-name {
   font-size: 26rpx;
   font-weight: 600;

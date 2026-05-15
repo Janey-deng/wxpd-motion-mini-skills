@@ -9,11 +9,11 @@ Skill名称: "ActionsheetSlideUpElegant"
 场景编号: "C2"
 场景名: "底部抽屉"
 动作类型: "Entrance (入场)"
-时长: "520ms"
+时长: "420ms"
 缓动曲线: "cubic-bezier(0.32, 1.18, 0.5, 1)"
 动画属性: "transform, opacity"
 物理逻辑: "底部抽屉缓入缓出, 末端 ~7% 微量超越, 主动作完成后含蓄收尾。体感'呼吸感'。"
-AI唤醒词: "中文: 上滑展开 / 底部抽屉上滑展开 - 英文: slide up elegant / soft spring in"
+AI唤醒词: "中文: 上滑展开 / 底部抽屉优雅弹起 / 底部弹出 / 抽屉上滑 / 上推出现 - 英文: slide up elegant / actionsheet slide up / bottom drawer in / soft slide up / drawer rise"
 ```
 
 ---
@@ -37,7 +37,7 @@ AI唤醒词: "中文: 上滑展开 / 底部抽屉上滑展开 - 英文: slide up
   position: fixed; inset: 0;
   background: rgba(0, 0, 0, .4);
   opacity: 0; pointer-events: none;
-  transition: opacity 520ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 420ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .ml-actionsheet-mask--show { opacity: 1; pointer-events: auto; }
 
@@ -49,7 +49,7 @@ AI唤醒词: "中文: 上滑展开 / 底部抽屉上滑展开 - 英文: slide up
   will-change: transform;
 }
 .ml-actionsheet--in {
-  animation: ml-slide-up-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+  animation: ml-slide-up-elegant 420ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
 }
 
 @keyframes ml-slide-up-elegant {
@@ -64,7 +64,7 @@ AI唤醒词: "中文: 上滑展开 / 底部抽屉上滑展开 - 英文: slide up
 
 | 输入 spring | 输出 cubic-bezier | 实测 overshoot | 推荐 duration |
 | --- | --- | --- | --- |
-| `spring(1, 220, 18)` | `cubic-bezier(0.32, 1.18, 0.5, 1)` | ~7% | 520ms |
+| `spring(1, 220, 18)` | `cubic-bezier(0.32, 1.18, 0.5, 1)` | ~7% | 420ms |
 
 > 拟合算法详见 [miniprogram-preview/utils/spring2bezier.js](../../miniprogram-preview/utils/spring2bezier.js)。
 > Cubic-bezier 拟合误差 < 5%, 体感等效。
@@ -77,7 +77,7 @@ AI唤醒词: "中文: 上滑展开 / 底部抽屉上滑展开 - 英文: slide up
 FPS 预估:    60+
 重排风险:    无
 合成层:      已触发 GPU 加速 (translate3d + will-change)
-时长合规:    ✅ 520ms ≤ 600ms
+时长合规:    ✅ 420ms ≤ 1000ms
 ```
 
 ---
@@ -94,7 +94,7 @@ FPS 预估:    60+
 
 ### 通用 prompt 片段
 
-> "中文: 上滑展开 / 底部抽屉上滑展开 - 英文: slide up elegant / soft spring in"
+> "中文: 上滑展开 / 底部抽屉优雅弹起 / 底部弹出 / 抽屉上滑 / 上推出现 - 英文: slide up elegant / actionsheet slide up / bottom drawer in / soft slide up / drawer rise"
 
 ---
 

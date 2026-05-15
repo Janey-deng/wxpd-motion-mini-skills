@@ -9,15 +9,15 @@
 ---
 
 ```yaml
-Skill名称: "ExampleScaleInElegant"
+Skill名称: "ExampleSlideUpInElegant"
 场景编号: "C1"
 场景名: "居中弹窗"
 动作类型: "Entrance (入场)"
 时长: "520ms"
 缓动曲线: "cubic-bezier(0.32, 1.18, 0.5, 1)"
 动画属性: "transform, opacity"
-物理逻辑: "[1-2 句] 描述动效的加速方式、惯性及质感。例: 元素从 0.85 缩放经一次 ~7% 微量超越后稳定在 1.0,主动作完成后含蓄收尾。体感'呼吸感'。"
-AI唤醒词: "中文: 缩放浮入 / <场景中文>缩放浮入 - 英文: scale in elegant / soft spring in"
+物理逻辑: "[1-2 句] 描述动效的加速方式、惯性及质感。例: 元素从下方 24rpx 短距离上浮并渐显, 末端 ~7% 微量超越, 主动作完成后含蓄收尾。体感'呼吸感'。"
+AI唤醒词: "中文: 上滑浮入 / <场景中文>上滑浮入 - 英文: slide up in elegant / soft spring in"
 ```
 
 > **核心字段** (motion.mdc 4.1 节 [MUST]): `Skill名称` / `物理逻辑` / `AI唤醒词` + 实现代码 (本项目放第 1 节)。
@@ -54,17 +54,17 @@ AI唤醒词: "中文: 缩放浮入 / <场景中文>缩放浮入 - 英文: scale 
   position: absolute; left: 50%; top: 50%;
   width: 560rpx;
   background: #fff; border-radius: 24rpx;
-  transform: translate3d(-50%, -50%, 0) scale(0.85);
+  transform: translate3d(-50%, -50%, 0);
   opacity: 0;
   will-change: transform, opacity;
 }
 .ml-modal--in {
-  animation: ml-scale-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+  animation: ml-slide-up-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
 }
 
-@keyframes ml-scale-in-elegant {
-  0%   { transform: translate3d(-50%, -50%, 0) scale(0.85); opacity: 0; }
-  100% { transform: translate3d(-50%, -50%, 0) scale(1.0);  opacity: 1; }
+@keyframes ml-slide-up-in-elegant {
+  0%   { transform: translate3d(-50%, calc(-50% + 24rpx), 0); opacity: 0; }
+  100% { transform: translate3d(-50%, -50%, 0);               opacity: 1; }
 }
 ```
 
@@ -87,7 +87,7 @@ AI唤醒词: "中文: 缩放浮入 / <场景中文>缩放浮入 - 英文: scale 
 FPS 预估:    60+ (仅 transform/opacity, GPU 合成层)
 重排风险:    无 (未触发 layout 属性)
 合成层:      已触发 GPU 加速 (translate3d + will-change)
-时长合规:    ✅ 520ms ≤ 600ms
+时长合规:    ✅ 520ms ≤ 1000ms
 ```
 
 ---
@@ -96,15 +96,15 @@ FPS 预估:    60+ (仅 transform/opacity, GPU 合成层)
 
 ### 在 Cursor 中
 
-> "在 `pages/<your-page>` 给居中弹窗加一个**优雅入场**动效,参考 `modal-scale-in-elegant` skill"
+> "在 `pages/<your-page>` 给居中弹窗加一个**优雅入场**动效,参考 `modal-slide-up-in-elegant` skill"
 
 ### 在 Claude Code / Codex 中
 
-> "Apply the `modal-scale-in-elegant` skill from `docs/motion-catalog.md` to `<component>`."
+> "Apply the `modal-slide-up-in-elegant` skill from `docs/motion-catalog.md` to `<component>`."
 
 ### 通用 prompt 片段
 
-> "中文: 缩放浮入 / 居中弹窗缩放浮入 - 英文: scale in elegant / soft spring in"
+> "中文: 上滑浮入 / 居中弹窗上滑浮入 - 英文: slide up in elegant / soft spring in"
 
 ---
 

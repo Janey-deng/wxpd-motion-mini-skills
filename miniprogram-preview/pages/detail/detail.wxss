@@ -10,9 +10,12 @@
   background: #f5f6f8;
   border-radius: 32rpx 32rpx 0 0;
   margin-top: -32rpx;
-  padding-top: 32rpx;
-  /* margin-top: -32rpx + padding-top: 32rpx 互相抵消, 内部子元素的相对位置完全保持;
-     真正的视觉效果: 顶部 32rpx 圆角覆盖在 .dt__stage (#cfcfd2 深灰) 上, 形成色差呈现圆角 */
+  overflow: hidden;
+  /* margin-top: -32rpx 让顶部 32rpx 圆角覆盖在 .dt__stage (#cfcfd2 深灰) 上, 形成色差呈现圆角;
+     overflow: hidden 触发 BFC, 阻止 .dt__head 的 margin-top: 32rpx 与本元素的 margin-top: -32rpx
+     发生 margin collapsing (否则会折叠为 0, 圆角覆盖效果丢失);
+     不设 padding-top: head margin-top: 32rpx 在 BFC 内即是 head 距 body 圆角顶的真实间距, 与下方
+     .dt__section 之间的 32rpx 完全对齐 */
 }
 
 /* ====== 导航条背景层 (默认透明, 滚动后 #fff) ====== */
@@ -63,15 +66,18 @@
   align-items: center;
 }
 
-/* ====== 控件区 (重播 + 倍速) ====== */
+/* ====== 控件区 (重播 + 倍速) — 已移入 .dt__stage 内, 在手机壳正下方 ======
+   margin-top: 48rpx 给手机壳与控件呼吸空间 (= .dt__stage padding-bottom 80rpx 中的 48rpx 安全距离, 节奏对称);
+   控件区不带背景, 直接漂浮在 stage 深灰底 (#cfcfd2) 上, 让 #fff 按钮自然显眼;
+   justify-content: center + gap: 12rpx, 让 .dt__speed 整组 (0.2x+1x, 内部 12rpx) 与 .dt__btn-replay 居中排列,
+   三按钮视觉间距统一 12rpx */
 .dt__controls {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: center;
+  gap: 12rpx;
   width: 100%;
   padding: 0 32rpx;
   box-sizing: border-box;
-  /* 不带背景与底分隔线: 让按钮区直接融入 .dt__body 浅灰背景, 视觉更轻
-     不再设 margin-top (避免与 body padding-top 重复加 32rpx);
-     上方 32rpx 间距由 body padding-top 提供, 下方 32rpx 由 .dt__head margin-top 提供, 节奏对称 */
+  margin-top: 48rpx;
 }
 .dt__speed {
   display: flex; gap: 12rpx;
@@ -97,12 +103,13 @@
   /* width: 120rpx 与 .dt__speed-item 等宽统一 */
 }
 
-/* ====== 信息模块 (现在排在预览图下方) ====== */
+/* ====== 信息模块 (现在排在预览图下方) ======
+   margin-top: 40rpx 比下方 section 之间的 32rpx 略大, 让 body 圆角顶到首张卡片有更舒展的呼吸 */
 .dt__head {
   background: #fff;
   border-radius: 24rpx;
   padding: 32rpx;
-  margin: 32rpx 24rpx 0;
+  margin: 40rpx 24rpx 0;
 }
 .dt__name {
   font-size: 40rpx;

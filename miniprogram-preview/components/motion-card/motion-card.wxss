@@ -2,8 +2,8 @@
    motion-card 通用动效预览组件
    - 演示舞台 (mc__stage / phone / viewport)
    - 简化手机壳: 圆角矩形外壳 + 8rpx 均匀黑边框 + 4 侧边键 (mc__btn-*)
-   - 7 个场景的 demo 元素基础样式 (mc__modal / mc__sheet / ...)
-   - 7 个 skill 的 keyframes (mc-anim-<skill-id>) — 文件末尾自动生成段
+   - 6 个场景的 demo 元素基础样式 (mc__modal / mc__sheet / ...)
+   - 6 个 skill 的 keyframes (mc-anim-<skill-id>) — 文件末尾自动生成段
    - 控件 (重播/倍速) 由外部页面 (detail.wxss .dt__controls) 提供并调用 setSpeed()/replay()
    ========================================================================== */
 
@@ -37,7 +37,7 @@
   bottom: 12rpx;
   left: 12rpx;
   right: 12rpx;
-  background: #f4f5f7;
+  background: #ededed;
   border-radius: 48rpx;
   overflow: hidden;
 }
@@ -70,47 +70,40 @@
 }
 
 /* ====== C1 Modal ====== */
+/* 遮罩 fade-in 动画: opacity 0→1, duration 由 wxml inline style 注入 (与 sheet/modal 同步, 倍速切换不掉拍);
+   用 Material standard easing (不用 elegant 微超越曲线): 遮罩不需要弹跳, 平滑渐显才是正确语义;
+   修复"遮罩瞬间出现, sheet/modal 慢慢入场"的节奏不同步("闪一下")问题。
+   200ms 仅作 fallback (= catalog.js 中 orchestration.maskDuration 默认值);
+   实际运行时 wxml inline style 总会覆盖此值, 此 200ms 仅在 inline style 缺失时兜底 */
 .mc__mask {
   position: absolute; inset: 0;
   background: rgba(0, 0, 0, .4);
+  animation: mc-mask-fade-in 200ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
+@keyframes mc-mask-fade-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+/* C1 Modal: 纯白卡片, 无子元素, 仅演示"上滑浮入 + 过冲"动效;
+   height 140rpx 跟原带文字版本视觉高度一致 (24+28+12+26+24 ≈ 114rpx 含 padding, 取 140rpx 略宽松) */
 .mc__modal {
   position: absolute; left: 50%; top: 50%;
   width: 320rpx;
+  height: 140rpx;
   background: #fff; border-radius: 12rpx;
-  padding: 24rpx 18rpx;
   box-sizing: border-box;
   transform: translate3d(-50%, -50%, 0);
   will-change: transform, opacity;
 }
-.mc__modal-title {
-  font-size: 24rpx; font-weight: 600;
-  text-align: center; margin-bottom: 12rpx;
-}
-.mc__modal-body {
-  font-size: 22rpx; color: #666;
-  text-align: center;
-}
 
-/* ====== C2 ActionSheet ====== */
+/* ====== C2 ActionSheet (纯白卡片, 无子元素, 仅演示"上滑出现"动效) ======
+   - 移除原 4 个 .mc__sheet-item 和分隔线, 卡片高度由显式 height: 50% 撑出 (= viewport 半屏) */
 .mc__sheet {
   position: absolute; left: 0; right: 0; bottom: 0;
+  height: 50%;
   background: #fff;
   border-radius: 12rpx 12rpx 0 0;
-  padding: 12rpx 0 18rpx;
   will-change: transform;
-}
-.mc__sheet-item {
-  padding: 18rpx 24rpx;
-  font-size: 22rpx;
-  text-align: center;
-  border-bottom: 1rpx solid #eee;
-}
-.mc__sheet-item--cancel {
-  border-bottom: 0;
-  margin-top: 12rpx;
-  border-top: 12rpx solid #f4f5f7;
-  color: #888;
 }
 
 /* ====== C3 Toast ====== */
@@ -126,22 +119,35 @@
   will-change: transform, opacity;
 }
 
-/* ====== C4 Card list ====== */
+/* ====== C4 Card list (两列瀑布流, 6 卡 stagger 入场) ======
+   - 顶距 240rpx (用户指定的视觉留白, 在 viewport 内从顶部预留)
+   - 左右各 24rpx 边距, 列间距 16rpx, 卡间距 16rpx
+   - 高度错落: tall 180rpx / short 120rpx (左列高/矮/高, 右列矮/高/矮)
+   - 纯白卡 #fff, 圆角 12rpx, 无装饰元素 (无 border / 无内部线条) */
 .mc__cardlist {
-  padding: 14rpx;
+  position: absolute;
+  inset: 0;
+  padding: 240rpx 24rpx 0;
+  box-sizing: border-box;
+  display: flex;
+  gap: 16rpx;
+}
+.mc__cardlist-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
 }
 .mc__card {
   background: #fff;
-  border-radius: 10rpx;
-  padding: 18rpx;
-  margin-bottom: 12rpx;
+  border-radius: 12rpx;
   will-change: transform, opacity;
 }
-.mc__card-line {
-  height: 10rpx; background: #e8eaed;
-  border-radius: 5rpx; margin-bottom: 10rpx;
-}
-.mc__card-line--short { width: 60%; }
+/* 高度 +50% (从原 180/120 → 270/180): 6 卡 + 240rpx 顶距下,
+   左列高度 752rpx > viewport 可用 616rpx, 底部 tall 卡会被 overflow:hidden 自然裁切;
+   这是有意为之的"往下还有内容"瀑布流眼动效果, 营造列表可继续滚动的暗示 */
+.mc__card--tall  { height: 270rpx; }
+.mc__card--short { height: 180rpx; }
 
 /* ====== C5 Popover ====== */
 /* anchor (48rpx 高) top: 280rpx → 底缘 328rpx; popover top: 340rpx, 留 12rpx gap 给箭头 */
@@ -177,36 +183,6 @@
   transform: translateX(-50%);
 }
 
-/* ====== C7 Skeleton ====== */
-.mc__skeleton {
-  padding: 24rpx 18rpx;
-}
-.mc__skeleton-line {
-  height: 18rpx; background: #e8eaed;
-  border-radius: 3rpx; margin-bottom: 12rpx;
-}
-.mc__skeleton-line--short { width: 60%; }
-.mc__skeleton-block {
-  height: 160rpx; background: #e8eaed;
-  border-radius: 6rpx; margin-top: 12rpx;
-}
-.mc__content {
-  padding: 24rpx 18rpx;
-  will-change: opacity;
-}
-.mc__content-title {
-  font-size: 26rpx; font-weight: 600;
-  margin-bottom: 10rpx;
-}
-.mc__content-meta {
-  font-size: 20rpx; color: #999;
-  margin-bottom: 16rpx;
-}
-.mc__content-body {
-  font-size: 22rpx; color: #444;
-  line-height: 1.6;
-}
-
 /* ====== C10 Refresh ====== */
 .mc__refresh {
   display: flex; justify-content: center; gap: 10rpx;
@@ -221,12 +197,13 @@
 
 /* ========== 自动生成段: skill keyframes (由 scripts/gen_keyframes.py 自动生成,勿手动改) ====== */
 
-@keyframes mc-modal-scale-in-elegant {
-  0%   { transform: translate3d(-50%, -50%, 0) scale(0.85); opacity: 0; }
-  100% { transform: translate3d(-50%, -50%, 0) scale(1.0); opacity: 1; }
+@keyframes mc-modal-slide-up-in-elegant {
+  0%   { transform: translate3d(-50%, calc(-50% + 24rpx), 0); opacity: 0; }
+  60%  { transform: translate3d(-50%, calc(-50% - 8rpx), 0); opacity: 1; }
+  100% { transform: translate3d(-50%, -50%, 0); opacity: 1; }
 }
-.mc-anim-modal-scale-in-elegant {
-  animation: mc-modal-scale-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+.mc-anim-modal-slide-up-in-elegant {
+  animation: mc-modal-slide-up-in-elegant 480ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 @keyframes mc-actionsheet-slide-up-elegant {
@@ -234,7 +211,7 @@
   100% { transform: translate3d(0, 0, 0); }
 }
 .mc-anim-actionsheet-slide-up-elegant {
-  animation: mc-actionsheet-slide-up-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+  animation: mc-actionsheet-slide-up-elegant 420ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
 }
 
 @keyframes mc-toast-drop-in-elegant {
@@ -250,7 +227,7 @@
   100% { transform: translate3d(0, 0, 0); opacity: 1; }
 }
 .mc-anim-card-stagger-in-elegant {
-  animation: mc-card-stagger-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+  animation: mc-card-stagger-in-elegant 600ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
 }
 
 @keyframes mc-popover-anchor-in-elegant {
@@ -259,14 +236,6 @@
 }
 .mc-anim-popover-anchor-in-elegant {
   animation: mc-popover-anchor-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
-}
-
-@keyframes mc-skeleton-crossfade-in-elegant {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-.mc-anim-skeleton-crossfade-in-elegant {
-  animation: mc-skeleton-crossfade-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
 }
 
 @keyframes mc-refresh-pull-in-elegant {
