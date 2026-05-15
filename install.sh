@@ -105,7 +105,13 @@ log_info "安装主体内容到 ${TARGET_DOCS}/ ..."
 mkdir -p "$TARGET_DOCS/skills"
 cp "$SRC_DIR/.cursor/rules/motion.mdc"  "$TARGET_DOCS/motion.mdc"
 cp "$SRC_DIR/docs/motion-catalog.md"    "$TARGET_DOCS/motion-catalog.md"
-cp "$SRC_DIR/docs/skills/"*.md          "$TARGET_DOCS/skills/"
+
+# 清理旧残留: v0.5.0 install.sh 误把 _template.md 等开发期文件复制到了同事项目里,
+# 升级到 v0.5.1+ 时主动删掉, 避免 AI 误读 _template.md 当作 skill 调用
+rm -f "$TARGET_DOCS/skills/_"*.md 2>/dev/null || true
+
+# 仅复制实际 skill 文件, 排除以 _ 开头的开发期内部文件 (例: _template.md)
+find "$SRC_DIR/docs/skills" -maxdepth 1 -name "*.md" -not -name "_*" -exec cp {} "$TARGET_DOCS/skills/" \;
 
 SKILL_COUNT=$(find "$TARGET_DOCS/skills" -maxdepth 1 -name "*.md" -not -name "_*" | wc -l | tr -d ' ')
 log_ok "已安装 1 份协议 + 1 份目录 + ${SKILL_COUNT} 个 skill"

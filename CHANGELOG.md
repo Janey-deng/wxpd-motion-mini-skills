@@ -14,6 +14,19 @@
 
 ---
 
+## [0.5.1] - 2026-05
+
+### Fixed
+
+- `install.sh` 误把开发期模板文件 `docs/skills/_template.md` 也复制到了同事项目里, 导致 AI 可能把 `_template.md` 误读为可调用 skill。修复为 `find ... -not -name "_*"` 仅复制实际 skill 文件 (7 个)。
+- `install.sh` 主动清理同事项目里 v0.5.0 残留的 `docs/motion-skills/skills/_*.md` (升级路径友好), 老用户重跑 `install.sh v0.5.1` 后该残留会自动删除, 无需手动清理。
+
+### Note
+
+- 本版仅修复 install.sh 工程问题, **不改任何 skill 物理参数 / 协议规则 / 演示效果**。已经在使用 v0.5.0 的同事建议升级。
+
+---
+
 ## [0.5.0] - 2026-05
 
 ### Changed

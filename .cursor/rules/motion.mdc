@@ -5,7 +5,7 @@ alwaysApply: true
 
 # 动效组件库 - 开发原则 (MOTION_LIBRARY_PROTOCOL)
 
-> 当前版本: **v0.5.0** (协议版本号统一由根目录 `VERSION` 文件维护; 发版时由 `scripts/release.sh` 自动同步本行)
+> 当前版本: **v0.5.1** (协议版本号统一由根目录 `VERSION` 文件维护; 发版时由 `scripts/release.sh` 自动同步本行)
 >
 > 本规则在每次对话前自动加载,所有动效相关任务必须严格遵循以下协议。
 
