@@ -1,0 +1,279 @@
+/* ==========================================================================
+   motion-card 通用动效预览组件
+   - 演示舞台 (mc__stage / phone / viewport)
+   - 简化手机壳: 圆角矩形外壳 + 8rpx 均匀黑边框 + 4 侧边键 (mc__btn-*)
+   - 7 个场景的 demo 元素基础样式 (mc__modal / mc__sheet / ...)
+   - 7 个 skill 的 keyframes (mc-anim-<skill-id>) — 文件末尾自动生成段
+   - 控件 (重播/倍速) 由外部页面 (detail.wxss .dt__controls) 提供并调用 setSpeed()/replay()
+   ========================================================================== */
+
+/* ====== 舞台 ====== */
+.mc {
+  display: flex; flex-direction: column;
+  align-items: center;
+  /* background/border-radius 由外部容器(detail.wxss .dt__stage)决定,组件本身保持透明
+     底 padding 0: 让手机壳底直接贴 motion-card 容器底 (与 .dt__stage padding-bottom: 0 配合, 控件区紧凑) */
+  padding: 8rpx 0 0;
+}
+.mc__stage {
+  display: flex; justify-content: center;
+  width: 100%;
+  padding: 24rpx 0 0;
+}
+/* 简化手机壳: 440x880rpx (~9:18), 黑色 12rpx 均匀边框 + 大圆角同心 + 4 侧边键
+   不再做 Notch/Home Indicator 等细节区分, 保留纯净的圆角矩形 + 侧键 */
+.mc__phone {
+  position: relative;
+  width: 440rpx;
+  height: 880rpx;
+  background: #1a1a1a;
+  border-radius: 60rpx;
+  box-sizing: border-box;
+}
+/* 屏幕区域: absolute 四边均 12rpx 黑色边框, 内圆角 48rpx 与外圆角 60rpx 同心 (60 - 12 = 48) */
+.mc__viewport {
+  position: absolute;
+  top: 12rpx;
+  bottom: 12rpx;
+  left: 12rpx;
+  right: 12rpx;
+  background: #f4f5f7;
+  border-radius: 48rpx;
+  overflow: hidden;
+}
+/* ====== 侧边按键 (深灰金属条, 略凸出 phone 边框 -3rpx) ====== */
+.mc__btn-mute,
+.mc__btn-vol-up,
+.mc__btn-vol-down {
+  position: absolute;
+  left: -3rpx;
+  width: 6rpx;
+  background: #2a2a2a;
+  border-radius: 2rpx 0 0 2rpx;
+}
+.mc__btn-mute     { top: 140rpx; height: 32rpx; }
+.mc__btn-vol-up   { top: 200rpx; height: 70rpx; }
+.mc__btn-vol-down { top: 290rpx; height: 70rpx; }
+.mc__btn-power {
+  position: absolute;
+  right: -3rpx;
+  top: 220rpx;
+  width: 6rpx;
+  height: 96rpx;
+  background: #2a2a2a;
+  border-radius: 0 2rpx 2rpx 0;
+}
+.mc__bg-content {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #b0b0b8; font-size: 22rpx;
+}
+
+/* ====== C1 Modal ====== */
+.mc__mask {
+  position: absolute; inset: 0;
+  background: rgba(0, 0, 0, .4);
+}
+.mc__modal {
+  position: absolute; left: 50%; top: 50%;
+  width: 320rpx;
+  background: #fff; border-radius: 12rpx;
+  padding: 24rpx 18rpx;
+  box-sizing: border-box;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform, opacity;
+}
+.mc__modal-title {
+  font-size: 24rpx; font-weight: 600;
+  text-align: center; margin-bottom: 12rpx;
+}
+.mc__modal-body {
+  font-size: 22rpx; color: #666;
+  text-align: center;
+}
+
+/* ====== C2 ActionSheet ====== */
+.mc__sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: #fff;
+  border-radius: 12rpx 12rpx 0 0;
+  padding: 12rpx 0 18rpx;
+  will-change: transform;
+}
+.mc__sheet-item {
+  padding: 18rpx 24rpx;
+  font-size: 22rpx;
+  text-align: center;
+  border-bottom: 1rpx solid #eee;
+}
+.mc__sheet-item--cancel {
+  border-bottom: 0;
+  margin-top: 12rpx;
+  border-top: 12rpx solid #f4f5f7;
+  color: #888;
+}
+
+/* ====== C3 Toast ====== */
+/* top: 18rpx 在 viewport 内上方, viewport 起点距 phone 顶 12rpx, 所以 toast 距 phone 顶 = 30rpx */
+.mc__toast {
+  position: absolute; top: 18rpx; left: 50%;
+  padding: 10rpx 18rpx;
+  background: rgba(0, 0, 0, .8); color: #fff;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  white-space: nowrap;
+  transform: translate3d(-50%, 0, 0);
+  will-change: transform, opacity;
+}
+
+/* ====== C4 Card list ====== */
+.mc__cardlist {
+  padding: 14rpx;
+}
+.mc__card {
+  background: #fff;
+  border-radius: 10rpx;
+  padding: 18rpx;
+  margin-bottom: 12rpx;
+  will-change: transform, opacity;
+}
+.mc__card-line {
+  height: 10rpx; background: #e8eaed;
+  border-radius: 5rpx; margin-bottom: 10rpx;
+}
+.mc__card-line--short { width: 60%; }
+
+/* ====== C5 Popover ====== */
+/* anchor (48rpx 高) top: 280rpx → 底缘 328rpx; popover top: 340rpx, 留 12rpx gap 给箭头 */
+.mc__anchor {
+  position: absolute; top: 280rpx; left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx; height: 48rpx;
+  background: #1a1a1a; color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22rpx;
+}
+.mc__popover {
+  position: absolute; top: 340rpx; left: 50%;
+  transform-origin: center top;
+  background: #fff;
+  padding: 12rpx 18rpx;
+  border-radius: 10rpx;
+  box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, .12);
+  font-size: 20rpx;
+  margin-left: -100rpx;
+  width: 200rpx;
+  box-sizing: border-box;
+  text-align: center;
+  will-change: transform, opacity;
+}
+.mc__popover-arrow {
+  position: absolute; top: -8rpx; left: 50%;
+  width: 0; height: 0;
+  border-left: 8rpx solid transparent;
+  border-right: 8rpx solid transparent;
+  border-bottom: 8rpx solid #fff;
+  transform: translateX(-50%);
+}
+
+/* ====== C7 Skeleton ====== */
+.mc__skeleton {
+  padding: 24rpx 18rpx;
+}
+.mc__skeleton-line {
+  height: 18rpx; background: #e8eaed;
+  border-radius: 3rpx; margin-bottom: 12rpx;
+}
+.mc__skeleton-line--short { width: 60%; }
+.mc__skeleton-block {
+  height: 160rpx; background: #e8eaed;
+  border-radius: 6rpx; margin-top: 12rpx;
+}
+.mc__content {
+  padding: 24rpx 18rpx;
+  will-change: opacity;
+}
+.mc__content-title {
+  font-size: 26rpx; font-weight: 600;
+  margin-bottom: 10rpx;
+}
+.mc__content-meta {
+  font-size: 20rpx; color: #999;
+  margin-bottom: 16rpx;
+}
+.mc__content-body {
+  font-size: 22rpx; color: #444;
+  line-height: 1.6;
+}
+
+/* ====== C10 Refresh ====== */
+.mc__refresh {
+  display: flex; justify-content: center; gap: 10rpx;
+  height: 60rpx; align-items: center;
+  background: rgba(0, 0, 0, .04);
+  will-change: transform, opacity;
+}
+.mc__refresh-dot {
+  width: 10rpx; height: 10rpx;
+  background: #888; border-radius: 50%;
+}
+
+/* ========== 自动生成段: skill keyframes (由 scripts/gen_keyframes.py 自动生成,勿手动改) ====== */
+
+@keyframes mc-modal-scale-in-elegant {
+  0%   { transform: translate3d(-50%, -50%, 0) scale(0.85); opacity: 0; }
+  100% { transform: translate3d(-50%, -50%, 0) scale(1.0); opacity: 1; }
+}
+.mc-anim-modal-scale-in-elegant {
+  animation: mc-modal-scale-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+}
+
+@keyframes mc-actionsheet-slide-up-elegant {
+  0%   { transform: translate3d(0, 100%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+.mc-anim-actionsheet-slide-up-elegant {
+  animation: mc-actionsheet-slide-up-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+}
+
+@keyframes mc-toast-drop-in-elegant {
+  0%   { transform: translate3d(-50%, -200%, 0); opacity: 0; }
+  100% { transform: translate3d(-50%, 0, 0); opacity: 1; }
+}
+.mc-anim-toast-drop-in-elegant {
+  animation: mc-toast-drop-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+}
+
+@keyframes mc-card-stagger-in-elegant {
+  0%   { transform: translate3d(0, 24rpx, 0); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+.mc-anim-card-stagger-in-elegant {
+  animation: mc-card-stagger-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+}
+
+@keyframes mc-popover-anchor-in-elegant {
+  0%   { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1.0); opacity: 1; }
+}
+.mc-anim-popover-anchor-in-elegant {
+  animation: mc-popover-anchor-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+}
+
+@keyframes mc-skeleton-crossfade-in-elegant {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+.mc-anim-skeleton-crossfade-in-elegant {
+  animation: mc-skeleton-crossfade-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+}
+
+@keyframes mc-refresh-pull-in-elegant {
+  0%   { transform: translate3d(0, -100%, 0); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+.mc-anim-refresh-pull-in-elegant {
+  animation: mc-refresh-pull-in-elegant 520ms cubic-bezier(0.32, 1.18, 0.5, 1) both;
+}
+

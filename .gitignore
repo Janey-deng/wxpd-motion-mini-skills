@@ -1,0 +1,36 @@
+# ====== macOS ======
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# ====== 微信小程序 ======
+# project.private.config.json 包含本地开发者工具的个人配置 (appid / 用户信息),
+# 必须忽略避免泄漏个人信息或在多人开发时互相覆盖
+miniprogram-preview/project.private.config.json
+
+# 小程序构建产物 (微信开发者工具自动生成)
+**/miniprogram_npm/
+**/node_modules/
+
+# ====== Python (生成脚本运行产物) ======
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ====== IDE / 编辑器 ======
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ====== 日志 / 临时文件 ======
+*.log
+*.tmp
+.cache/

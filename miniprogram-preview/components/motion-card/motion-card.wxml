@@ -1,0 +1,103 @@
+<view class="mc" wx:if="{{skill}}">
+  <view class="mc__stage">
+    <view class="mc__phone">
+      <!-- 侧边按键 (左 3: 静音/音量+/音量-, 右 1: 电源) -->
+      <view class="mc__btn-mute"></view>
+      <view class="mc__btn-vol-up"></view>
+      <view class="mc__btn-vol-down"></view>
+      <view class="mc__btn-power"></view>
+      <view class="mc__viewport">
+
+        <!-- C1 Modal: 居中弹窗 -->
+        <block wx:if="{{skill.sceneId === 'C1'}}">
+          <view class="mc__bg-content">页面内容</view>
+          <view wx:if="{{visible}}" class="mc__mask"></view>
+          <view wx:if="{{visible}}"
+                class="mc__modal mc-anim-{{skill.id}}"
+                style="animation-duration: {{actualDuration}}ms;">
+            <view class="mc__modal-title">操作确认</view>
+            <view class="mc__modal-body">是否确认提交?</view>
+          </view>
+        </block>
+
+        <!-- C2 ActionSheet: 底部抽屉 -->
+        <block wx:elif="{{skill.sceneId === 'C2'}}">
+          <view class="mc__bg-content">页面内容</view>
+          <view wx:if="{{visible}}" class="mc__mask"></view>
+          <view wx:if="{{visible}}"
+                class="mc__sheet mc-anim-{{skill.id}}"
+                style="animation-duration: {{actualDuration}}ms;">
+            <view class="mc__sheet-item">分享给好友</view>
+            <view class="mc__sheet-item">分享到朋友圈</view>
+            <view class="mc__sheet-item">收藏</view>
+            <view class="mc__sheet-item mc__sheet-item--cancel">取消</view>
+          </view>
+        </block>
+
+        <!-- C3 Toast: 顶部提示 -->
+        <block wx:elif="{{skill.sceneId === 'C3'}}">
+          <view class="mc__bg-content">页面内容</view>
+          <view wx:if="{{visible}}"
+                class="mc__toast mc-anim-{{skill.id}}"
+                style="animation-duration: {{actualDuration}}ms;">
+            <text>操作成功</text>
+          </view>
+        </block>
+
+        <!-- C4 Card list: 列表项卡片 -->
+        <block wx:elif="{{skill.sceneId === 'C4'}}">
+          <view class="mc__cardlist">
+            <view wx:if="{{visible}}"
+                  class="mc__card mc-anim-{{skill.id}}"
+                  wx:for="{{[1,2,3,4]}}" wx:key="*this"
+                  style="animation-duration: {{actualDuration}}ms; animation-delay: {{index * 60}}ms;">
+              <view class="mc__card-line"></view>
+              <view class="mc__card-line mc__card-line--short"></view>
+            </view>
+          </view>
+        </block>
+
+        <!-- C5 Popover: 浮层 -->
+        <block wx:elif="{{skill.sceneId === 'C5'}}">
+          <view class="mc__bg-content">页面内容</view>
+          <view class="mc__anchor">⌘</view>
+          <view wx:if="{{visible}}"
+                class="mc__popover mc-anim-{{skill.id}}"
+                style="animation-duration: {{actualDuration}}ms;">
+            <view class="mc__popover-arrow"></view>
+            <view>这是引导提示</view>
+          </view>
+        </block>
+
+        <!-- C7 Skeleton crossfade -->
+        <block wx:elif="{{skill.sceneId === 'C7'}}">
+          <view wx:if="{{!visible}}" class="mc__skeleton">
+            <view class="mc__skeleton-line"></view>
+            <view class="mc__skeleton-line mc__skeleton-line--short"></view>
+            <view class="mc__skeleton-block"></view>
+          </view>
+          <view wx:if="{{visible}}"
+                class="mc__content mc-anim-{{skill.id}}"
+                style="animation-duration: {{actualDuration}}ms;">
+            <view class="mc__content-title">2026 年度报告</view>
+            <view class="mc__content-meta">作者: 设计团队 · 4 月 12 日</view>
+            <view class="mc__content-body">这里是骨架屏切换为真实内容后的展示区域。</view>
+          </view>
+        </block>
+
+        <!-- C10 Refresh pull -->
+        <block wx:elif="{{skill.sceneId === 'C10'}}">
+          <view wx:if="{{visible}}"
+                class="mc__refresh mc-anim-{{skill.id}}"
+                style="animation-duration: {{actualDuration}}ms;">
+            <view class="mc__refresh-dot"></view>
+            <view class="mc__refresh-dot"></view>
+            <view class="mc__refresh-dot"></view>
+          </view>
+          <view class="mc__bg-content">下拉刷新触发后的指示器</view>
+        </block>
+
+      </view>
+    </view>
+  </view>
+</view>

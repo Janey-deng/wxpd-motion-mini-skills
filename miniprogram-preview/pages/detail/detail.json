@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "motion-card": "/components/motion-card/motion-card"
+  }
+}

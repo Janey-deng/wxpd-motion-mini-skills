@@ -1,0 +1,213 @@
+.dt {
+  padding: 0 0 64rpx;
+  background: #f5f6f8;
+  /* 详情页样式: 浅灰背景 + 白色卡片 (沿用全局 page 浅灰底); .dt__body 是真正可见的内容区 wrapper */
+}
+
+/* ====== 内容区 wrapper (圆角 32rpx 上推到 .dt__stage 深灰底, 形成"内容从舞台下方上滑"视觉) ====== */
+.dt__body {
+  position: relative;
+  background: #f5f6f8;
+  border-radius: 32rpx 32rpx 0 0;
+  margin-top: -32rpx;
+  padding-top: 32rpx;
+  /* margin-top: -32rpx + padding-top: 32rpx 互相抵消, 内部子元素的相对位置完全保持;
+     真正的视觉效果: 顶部 32rpx 圆角覆盖在 .dt__stage (#cfcfd2 深灰) 上, 形成色差呈现圆角 */
+}
+
+/* ====== 导航条背景层 (默认透明, 滚动后 #fff) ====== */
+.dt__navbg {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  /* height 由 wxml inline style 注入 (= safeTop = menu.bottom + 6) */
+  background: transparent;
+  transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+  pointer-events: none;
+}
+.dt__navbg--solid {
+  background: #ffffff;
+}
+
+/* ====== 自造返回按钮 (custom 模式高仿微信原生 default 返回组件) ====== */
+.dt__back {
+  position: fixed;
+  left: 16px;
+  /* top + width + height 由 inline style 注入 (来自 wx.getMenuButtonBoundingClientRect),
+     跟微信胶囊按钮"等高 + 顶部对齐",视觉上跟胶囊按钮严格对称 */
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, .08);
+}
+.dt__back-icon {
+  font-size: 36rpx;
+  color: #1a1a1a;
+  font-weight: 400;
+  line-height: 1;
+  margin-top: -2rpx;
+}
+
+/* ====== 通栏预览舞台 (灰底从屏顶贯通到状态栏 + 胶囊按钮区域) ====== */
+.dt__stage {
+  width: 100%;
+  background: #cfcfd2;
+  /* padding-top 由 wxml inline style 注入 (= safeTop = menu.bottom + 6),
+     让灰底覆盖状态栏 + 胶囊按钮区域,且手机壳跟胶囊按钮之间有 6px 呼吸 */
+  padding-bottom: 80rpx;
+  /* 底 padding 80rpx = 48rpx 灰色可见呼吸 (手机壳底→浅灰 body 圆角顶) + 32rpx body 上推覆盖部分;
+     这样 body 圆角刚好覆盖到 stage 底上方 32rpx, 手机壳底下方仍有 48rpx 灰色作为安全距离, 不再贴合 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ====== 控件区 (重播 + 倍速) ====== */
+.dt__controls {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%;
+  padding: 0 32rpx;
+  box-sizing: border-box;
+  /* 不带背景与底分隔线: 让按钮区直接融入 .dt__body 浅灰背景, 视觉更轻
+     不再设 margin-top (避免与 body padding-top 重复加 32rpx);
+     上方 32rpx 间距由 body padding-top 提供, 下方 32rpx 由 .dt__head margin-top 提供, 节奏对称 */
+}
+.dt__speed {
+  display: flex; gap: 12rpx;
+}
+.dt__speed-item {
+  width: 120rpx; height: 56rpx;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 999rpx;
+  background: #fff; color: #888;
+  font-size: 24rpx;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  /* width: 120rpx 与 .dt__btn-replay 等宽统一, 文字 flex 居中 */
+}
+.dt__speed-item--active {
+  background: #1a1a1a; color: #fff;
+}
+.dt__btn-replay {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 120rpx; height: 56rpx;
+  border-radius: 999rpx;
+  background: #fff; color: #1a1a1a;
+  font-size: 24rpx;
+  /* width: 120rpx 与 .dt__speed-item 等宽统一 */
+}
+
+/* ====== 信息模块 (现在排在预览图下方) ====== */
+.dt__head {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin: 32rpx 24rpx 0;
+}
+.dt__name {
+  font-size: 40rpx;
+  font-weight: 700;
+  letter-spacing: -1rpx;
+}
+.dt__physics {
+  font-size: 26rpx;
+  color: #555;
+  line-height: 1.5;
+  margin-top: 20rpx;
+}
+
+/* ====== 其它信息模块 ====== */
+.dt__section {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin: 32rpx 24rpx 0;
+}
+.dt__section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.dt__table {
+  display: flex; flex-direction: column;
+  gap: 12rpx;
+}
+.dt__row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f0f0f3;
+  /* align-items: flex-start 让 key 与 val 顶部对齐, val 多行时 key 不会飘在中间;
+     物理参数 val 全是单行, 视觉无差异 */
+}
+.dt__row:last-child {
+  border-bottom: 0;
+}
+.dt__row-key {
+  font-size: 26rpx;
+  color: #888;
+}
+.dt__row-val {
+  font-size: 26rpx;
+  color: #1a1a1a;
+  text-align: right;
+  flex: 1;
+  margin-left: 24rpx;
+  word-break: normal;
+  overflow-wrap: break-word;
+  /* word-break: normal + overflow-wrap: break-word
+     - 英文: 只在空格/标点处换行, 不会把单词拆字母 (修复 "gentle" → "g" + "entle" 问题)
+     - 中文: 字符之间默认可断, 仍然正常换行
+     - 物理参数 Curve "cubic-bezier(...)" 在逗号/空格处自然断行, 无影响 */
+}
+
+.dt__check {
+  display: flex; flex-direction: column;
+  gap: 12rpx;
+}
+.dt__check-item {
+  display: flex; align-items: flex-start;
+  gap: 12rpx;
+  font-size: 25rpx;
+  color: #444;
+  line-height: 1.5;
+}
+.dt__check-icon {
+  color: #2ea043;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.dt__actions {
+  display: flex; flex-direction: column;
+  gap: 16rpx;
+  margin: 40rpx 24rpx 0;
+}
+.dt__btn {
+  display: flex; align-items: center; justify-content: center;
+  height: 88rpx;
+  border-radius: 16rpx;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 500;
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dt__btn:active {
+  transform: scale(0.98);
+}
+.dt__btn--ghost {
+  background: #fff;
+  color: #1a1a1a;
+}
+
+.dt__footer {
+  margin: 48rpx 24rpx 0;
+  text-align: center;
+}
+.dt__footer-line {
+  display: block;
+  font-size: 22rpx;
+  color: #b0b0b8;
+  margin-bottom: 8rpx;
+}

@@ -1,0 +1,36 @@
+<view class="idx" style="padding-top: {{safeTop}}px;">
+
+  <!-- 导航条背景层: 默认透明; 页面滚动时切 #fff, 区分导航区与下方正文区
+       z-index 50, pointer-events: none 不拦截点击 (首页无 fixed 返回按钮, z-index 高低不影响) -->
+  <view
+    class="idx__navbg {{navSolid ? 'idx__navbg--solid' : ''}}"
+    style="height: {{safeTop}}px;"
+  ></view>
+
+  <view class="idx__hero">
+    <view class="idx__title">动效组件库</view>
+    <view class="idx__subtitle">微信小程序 · {{totalCount}} 个场景动效 · 优雅范式</view>
+  </view>
+
+  <!-- 每场景 1 张卡, 两列瀑布流 (上图下文)
+       UI 层只展示 "组件名称_动效形式 + 时长", 不展示 sceneId (sceneId 仅用作后台分类编号) -->
+  <view class="idx__grid">
+    <view wx:for="{{skills}}" wx:key="id"
+          class="idx__cell"
+          data-id="{{item.id}}"
+          bindtap="goDetail">
+      <view class="idx__cell-prv">
+        <scene-preview scene-id="{{item.sceneId}}"></scene-preview>
+      </view>
+      <view class="idx__cell-info">
+        <view class="idx__cell-name">{{item.sceneName}}_{{item.shortName}}</view>
+        <view class="idx__cell-dur ml-mono">{{item.duration}}ms</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="idx__footer">
+    <text class="idx__footer-line">共 {{totalCount}} 个 skill · 点击卡片查看预览与代码</text>
+    <text class="idx__footer-line idx__footer-line--mono ml-mono">.cursor/rules/motion.mdc</text>
+  </view>
+</view>

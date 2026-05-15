@@ -1,0 +1,64 @@
+<view class="prv">
+  <view class="prv__phone">
+    <view class="prv__shell"></view>
+    <view class="prv__viewport">
+
+      <block wx:if="{{sceneId === 'C1'}}">
+        <view class="prv__bg">页面</view>
+        <view class="prv__mask"></view>
+        <view class="prv__modal">
+          <view class="prv__line prv__line--title"></view>
+          <view class="prv__line prv__line--short"></view>
+        </view>
+      </block>
+
+      <block wx:elif="{{sceneId === 'C2'}}">
+        <view class="prv__bg">页面</view>
+        <view class="prv__mask"></view>
+        <view class="prv__sheet">
+          <view class="prv__line"></view>
+          <view class="prv__line"></view>
+          <view class="prv__line prv__line--short"></view>
+        </view>
+      </block>
+
+      <block wx:elif="{{sceneId === 'C3'}}">
+        <view class="prv__bg">页面</view>
+        <view class="prv__toast">提示</view>
+      </block>
+
+      <block wx:elif="{{sceneId === 'C4'}}">
+        <view class="prv__cardlist">
+          <view class="prv__card"></view>
+          <view class="prv__card"></view>
+          <view class="prv__card"></view>
+        </view>
+      </block>
+
+      <block wx:elif="{{sceneId === 'C5'}}">
+        <view class="prv__bg">页面</view>
+        <view class="prv__anchor"></view>
+        <view class="prv__popover">提示</view>
+      </block>
+
+      <block wx:elif="{{sceneId === 'C7'}}">
+        <view class="prv__content">
+          <view class="prv__line prv__line--title"></view>
+          <view class="prv__line"></view>
+          <view class="prv__line prv__line--short"></view>
+          <view class="prv__block"></view>
+        </view>
+      </block>
+
+      <block wx:elif="{{sceneId === 'C10'}}">
+        <view class="prv__refresh">
+          <view class="prv__dot"></view>
+          <view class="prv__dot"></view>
+          <view class="prv__dot"></view>
+        </view>
+        <view class="prv__bg prv__bg--below">页面</view>
+      </block>
+
+    </view>
+  </view>
+</view>

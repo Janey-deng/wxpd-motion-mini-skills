@@ -1,0 +1,12 @@
+page {
+  background: #f5f6f8;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  font-size: 28rpx;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ml-mono {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 24rpx;
+}

@@ -1,0 +1,164 @@
+/* ==========================================================================
+   scene-preview - 7 个动效场景的 mini 静态终态示意图
+   - 不带任何动画;只展示该场景"动效完成后"的视觉形态
+   - 1:1 正方形容器, 三层结构 (与详情页 motion-card 同色, 但比例更夸张):
+       prv__phone   (深灰舞台 #cfcfd2, 等同 detail.dt__stage, overflow hidden 裁切手机壳底部)
+       prv__shell   (黑色手机外壳, 顶部进入 + 底部溢出灰底被裁切, 仅露出"上半身")
+       prv__viewport(浅灰屏幕, 在 shell 内边距处定位, 顶圆底直贴 phone 底, 容纳场景元素)
+   - shell 与 viewport 是兄弟节点 (而非嵌套), 各自 absolute 独立定位:
+       shell 提供"手机外壳"的视觉黑边框 (顶+左右+大圆角)
+       viewport 后绘制盖在 shell 之上, 提供屏幕显示区域
+   - 外层卡片 (.idx__cell-prv) 用 border-radius 做顶部圆角裁切, 组件自身不画边框
+   ========================================================================== */
+
+/* prv 容器宽度由父级决定 (100%);用 padding-bottom: 100% 维持 1:1 正方形 */
+.prv {
+  width: 100%;
+  position: relative;
+  padding-bottom: 100%;
+}
+/* 灰底舞台: 与详情页 .dt__stage 同色; overflow hidden 用于裁切手机壳底部溢出部分 */
+.prv__phone {
+  position: absolute;
+  inset: 0;
+  background: #cfcfd2;
+  overflow: hidden;
+}
+/* 黑色手机外壳: 顶部 / 左右四周均留 14% 灰边 (1:1 正方形下 top 与 left/right 视觉等距),
+   底部溢出 phone 高度的 40% 被裁; 纯视觉元素, 不含内容;
+   viewport 后绘制盖在其上, 留下黑色边框作为"手机壳"轮廓 */
+.prv__shell {
+  position: absolute;
+  top: 14%;
+  left: 14%;
+  right: 14%;
+  bottom: -40%;
+  background: #1a1a1a;
+  border-radius: 32rpx;
+  pointer-events: none;
+}
+/* 屏幕区域: 在 shell 内边距处定位 (top/左右各在 shell 基础上 +8rpx),
+   顶圆 (与 shell 协调) 底直 (贴 phone 底, 让 shell 底部裁切看不出突兀);
+   场景内容在此 viewport 内以 % / rpx 定位 */
+.prv__viewport {
+  position: absolute;
+  top: calc(14% + 8rpx);
+  left: calc(14% + 8rpx);
+  right: calc(14% + 8rpx);
+  bottom: 0;
+  background: #f4f5f7;
+  border-radius: 24rpx 24rpx 0 0;
+  overflow: hidden;
+}
+
+/* 通用 */
+.prv__bg {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #c0c0c8; font-size: 16rpx;
+}
+.prv__bg--below {
+  top: 40rpx;
+}
+.prv__mask {
+  position: absolute; inset: 0;
+  background: rgba(0, 0, 0, .35);
+}
+.prv__line {
+  height: 6rpx;
+  background: #e8eaed;
+  border-radius: 3rpx;
+  width: 100%;
+}
+.prv__line--short { width: 55%; }
+.prv__line--title {
+  height: 10rpx; width: 50%;
+  background: #c8c8cc;
+}
+
+/* C1 Modal */
+.prv__modal {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  background: #fff; border-radius: 8rpx;
+  padding: 14rpx 12rpx;
+  display: flex; flex-direction: column; gap: 8rpx;
+}
+
+/* C2 Sheet */
+.prv__sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 50%;
+  background: #fff;
+  border-radius: 12rpx 12rpx 0 0;
+  padding: 14rpx 14rpx;
+  display: flex; flex-direction: column; gap: 10rpx;
+}
+
+/* C3 Toast */
+.prv__toast {
+  position: absolute; top: 14rpx; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, .75); color: #fff;
+  font-size: 14rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+  white-space: nowrap;
+}
+
+/* C4 Card list */
+.prv__cardlist {
+  padding: 12rpx;
+  display: flex; flex-direction: column; gap: 8rpx;
+}
+.prv__card {
+  height: 50rpx;
+  background: #fff;
+  border-radius: 6rpx;
+  border: 1rpx solid #ececef;
+}
+
+/* C5 Popover */
+.prv__anchor {
+  position: absolute; top: 100rpx; left: 50%;
+  transform: translateX(-50%);
+  width: 24rpx; height: 24rpx;
+  background: #1a1a1a;
+  border-radius: 50%;
+}
+.prv__popover {
+  position: absolute; top: 138rpx; left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 6rpx 14rpx;
+  border-radius: 6rpx;
+  font-size: 14rpx;
+  color: #333;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, .1);
+  white-space: nowrap;
+}
+
+/* C7 Skeleton (终态:内容已显示) */
+.prv__content {
+  padding: 14rpx 12rpx;
+  display: flex; flex-direction: column; gap: 8rpx;
+}
+.prv__block {
+  height: 70rpx;
+  background: #e8eaed;
+  border-radius: 6rpx;
+  margin-top: 6rpx;
+}
+
+/* C10 Refresh */
+.prv__refresh {
+  display: flex; justify-content: center; gap: 8rpx;
+  height: 32rpx; align-items: center;
+  background: rgba(0, 0, 0, .04);
+}
+.prv__dot {
+  width: 8rpx; height: 8rpx;
+  background: #888;
+  border-radius: 50%;
+}
